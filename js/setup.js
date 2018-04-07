@@ -15,20 +15,11 @@
 
   toggleModal(setupModal);
 
-  var getRandomInt = function (min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
   var getWizards = function (names, surnames, coatColors, eyesColors) {
     var wizards = [];
 
     names.forEach(function () {
-      var wizard = {};
-
-      wizard.name = names[getRandomInt(0, names.length - 1)] + ' ' + surnames[getRandomInt(0, surnames.length - 1)];
-      wizard.coatColor = coatColors[getRandomInt(0, coatColors.length - 1)];
-      wizard.eyesColor = eyesColors[getRandomInt(0, eyesColors.length - 1)];
-
+      var wizard = new window.Wizard(names, surnames, coatColors, eyesColors);
       wizards.push(wizard);
     });
 
