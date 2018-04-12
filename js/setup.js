@@ -8,12 +8,49 @@
   var WIZARDS_COUNT = 4;
 
   var setupModal = document.querySelector('.setup');
+  var setupOpenEl = document.querySelector('.setup-open');
+  var setupCloseEl = setupModal.querySelector('.setup-close');
+  var userIconEl = document.querySelector('.setup-open-icon');
 
   var toggleModal = function (modal) {
     modal.classList.toggle('hidden');
   };
 
-  toggleModal(setupModal);
+  var onSetupOpenClick = function (evt) {
+    evt.preventDefault();
+
+    toggleModal(setupModal);
+    document.addEventListener('keyup', onSetupEscPressed);
+  };
+
+  var onSetupCloseClick = function (evt) {
+    evt.preventDefault();
+    toggleModal(setupModal);
+  };
+
+  var onSetupEscPressed = function (evt) {
+    evt.preventDefault();
+
+    if (window.Util.isEscPressed(evt)) {
+      toggleModal(setupModal);
+      userIconEl.addEventListener('keyup', onUserEnterPress);
+      document.removeEventListener('keyup', onSetupEscPressed);
+    }
+  };
+
+  var onUserEnterPress = function (evt) {
+    evt.preventDefault();
+
+    if (window.Util.isEnterPressed(evt)) {
+      toggleModal(setupModal);
+      document.addEventListener('keyup', onSetupEscPressed);
+      userIconEl.removeEventListener('keyup', onUserEnterPress);
+    }
+  };
+
+  setupOpenEl.addEventListener('click', onSetupOpenClick);
+  setupCloseEl.addEventListener('click', onSetupCloseClick);
+  userIconEl.addEventListener('keyup', onUserEnterPress);
 
   var getWizards = function (names, surnames, coatColors, eyesColors) {
     var wizards = [];
