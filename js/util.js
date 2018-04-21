@@ -13,6 +13,10 @@
       return evt.keyCode === this.ENTER_KEYCODE;
     },
 
+    isImage: function (node) {
+      return node.tagName.toLowerCase() === 'img';
+    },
+
     getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
