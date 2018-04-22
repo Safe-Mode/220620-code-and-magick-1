@@ -146,6 +146,14 @@
   var currentTargetEl = null;
   var nextTargetEl = null;
 
+  var colorizeCell = function (target, color) {
+    if (window.Util.isImage(target)) {
+      target.parentElement.style.backgroundColor = (color) ? color : '';
+    } else {
+      target.style.backgroundColor = (color) ? color : '';
+    }
+  };
+
   var onArtifactsDragover = function (evt) {
     evt.preventDefault();
     return false;
@@ -153,16 +161,11 @@
 
   var onArtifactsDragenter = function (evt) {
     if (currentTargetEl && currentTargetEl !== evt.target.parentElement) {
-      currentTargetEl.style.backgroundColor = '';
+      colorizeCell(currentTargetEl, '');
     }
 
     nextTargetEl = evt.target;
-
-    if (window.Util.isImage(evt.target)) {
-      evt.target.parentElement.style.backgroundColor = 'yellow';
-    } else {
-      evt.target.style.backgroundColor = 'yellow';
-    }
+    colorizeCell(evt.target, 'yellow');
 
     evt.preventDefault();
   };
@@ -172,22 +175,13 @@
       evt.target.appendChild(draggedItemEl);
     }
 
-    if (window.Util.isImage(evt.target)) {
-      evt.target.parentElement.style.backgroundColor = '';
-    } else {
-      evt.target.style.backgroundColor = '';
-    }
-
+    colorizeCell(evt.target);
     evt.preventDefault();
   };
 
   var onArtifactsDragleave = function (evt) {
     if (evt.target !== nextTargetEl.parentElement) {
-      if (window.Util.isImage(evt.target)) {
-        evt.target.parentElement.style.backgroundColor = '';
-      } else {
-        evt.target.style.backgroundColor = '';
-      }
+      colorizeCell(evt.target);
     }
 
     currentTargetEl = evt.target;
