@@ -53,18 +53,24 @@
   setupCloseEl.addEventListener('click', onSetupCloseClick);
   userIconEl.addEventListener('keyup', onUserEnterPress);
 
-  var getWizards = function (names, surnames, coatColors, eyesColors) {
+  var getWizards = function (options) {
     var wizards = [];
 
-    names.forEach(function () {
-      var wizard = new window.Wizard(names, surnames, coatColors, eyesColors);
+    options.names.forEach(function () {
+      var wizard = new window.Wizard(options.names, options.surnames, options.coatColors, options.eyesColors);
       wizards.push(wizard);
     });
 
     return wizards;
   };
 
-  var wizards = getWizards(NAMES, SURNAMES, COAT_COLORS, EYES_COLORS);
+  var wizards = getWizards({
+    names: NAMES,
+    surnames: SURNAMES,
+    coatColors: COAT_COLORS,
+    eyesColors: EYES_COLORS
+  });
+
   var wizardTemplate = document.querySelector('#similar-wizard-template')
       .content
       .querySelector('.setup-similar-item');
@@ -103,114 +109,6 @@
   var wizardFireballEl = document.querySelector('.setup-fireball-wrap');
   var fireballColorInputEl = document.querySelector('input[name="fireball-color"]');
 
-  var colorizeElement = function (el, colors, input) {
-    var currentColor = input.value || colors[0];
-
-    var setColor = function (element, value) {
-      if (element.tagName === 'use') {
-        element.style.fill = value;
-      } else {
-        element.style.backgroundColor = value;
-      }
-
-      input.value = value;
-    };
-
-    for (var i = 0; i < colors.length; i++) {
-      if (colors[i] === currentColor && i < colors.length - 1) {
-        setColor(el, colors[i + 1]);
-        break;
-      } else if (i === colors.length - 1) {
-        setColor(el, colors[0]);
-        break;
-      }
-    }
-  };
-
-  var onWizardEyesClick = function (evt) {
-    evt.preventDefault();
-    colorizeElement(evt.target, EYES_COLORS, eyesColorInputEl);
-  };
-
-  var onWizardFireballClick = function (evt) {
-    evt.preventDefault();
-    colorizeElement(evt.target, FIREBALL_COLORS, fireballColorInputEl);
-  };
-
-  wizardEyesEl.addEventListener('click', onWizardEyesClick);
-  wizardFireballEl.addEventListener('click', onWizardFireballClick);
-
-  var artifactsShopEl = document.querySelector('.setup-artifacts-shop');
-  var artifactsEl = document.querySelector('.setup-artifacts');
-  var draggedItemEl = null;
-  var currentTargetEl = null;
-  var nextTargetEl = null;
-
-  var colorizeCell = function (target, color) {
-    if (window.Util.isImage(target)) {
-      target.parentElement.style.backgroundColor = (color) ? color : '';
-    } else {
-      target.style.backgroundColor = (color) ? color : '';
-    }
-  };
-
-  var onArtifactsDragover = function (evt) {
-    evt.preventDefault();
-    return false;
-  };
-
-  var onArtifactsDragenter = function (evt) {
-    if (currentTargetEl && currentTargetEl !== evt.target.parentElement) {
-      colorizeCell(currentTargetEl, '');
-    }
-
-    nextTargetEl = evt.target;
-    colorizeCell(evt.target, 'yellow');
-
-    evt.preventDefault();
-  };
-
-  var onArtifactsDrop = function (evt) {
-    if (evt.target.children.length === 0 && !window.Util.isImage(evt.target)) {
-      evt.target.appendChild(draggedItemEl);
-    }
-
-    colorizeCell(evt.target);
-    evt.preventDefault();
-  };
-
-  var onArtifactsDragleave = function (evt) {
-    if (evt.target !== nextTargetEl.parentElement) {
-      colorizeCell(evt.target);
-    }
-
-    currentTargetEl = evt.target;
-    evt.preventDefault();
-  };
-
-  var onArtifactsShopDragend = function (evt) {
-    draggedItemEl = null;
-    artifactsEl.style.outline = 'none';
-    artifactsEl.removeEventListener('dragover', onArtifactsDragover);
-    artifactsEl.removeEventListener('dragenter', onArtifactsDragenter);
-    artifactsEl.removeEventListener('drop', onArtifactsDrop);
-    artifactsEl.removeEventListener('dragleave', onArtifactsDragleave);
-    evt.currentTarget.removeEventListener('dragend', onArtifactsShopDragend);
-  };
-
-  var onArtifactsShopDragstart = function (evt) {
-    if (window.Util.isImage(evt.target)) {
-      draggedItemEl = evt.target.cloneNode(true);
-      evt.dataTransfer.setData('text/plain', evt.target.alt);
-      artifactsEl.style.outline = '2px dashed red';
-    }
-
-    artifactsEl.addEventListener('dragover', onArtifactsDragover);
-    artifactsEl.addEventListener('dragenter', onArtifactsDragenter);
-    artifactsEl.addEventListener('drop', onArtifactsDrop);
-    artifactsEl.addEventListener('dragleave', onArtifactsDragleave);
-    evt.currentTarget.addEventListener('dragend', onArtifactsShopDragend);
-  };
-
-  artifactsShopEl.addEventListener('dragstart', onArtifactsShopDragstart);
+  window.colorize(wizardEyesEl, EYES_COLORS, eyesColorInputEl);
+  window.colorize(wizardFireballEl, FIREBALL_COLORS, fireballColorInputEl);
 })();
