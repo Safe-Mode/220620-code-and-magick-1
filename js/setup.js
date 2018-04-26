@@ -7,7 +7,7 @@
   // var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   // var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-  var ENDPOINT_URL = 'https://js.dump.academy/code-and-magic';
+  var ENDPOINT_URL = 'https://js.dump.academy/code-and-magick';
   var DATA_URL = ENDPOINT_URL + '/data';
   var WIZARDS_COUNT = 4;
   var STATUS_OK = 200;
@@ -107,6 +107,7 @@
     var node = document.createElement('div');
     var messageColor = (status === STATUS_OK) ? 'green' : 'red';
 
+    node.id = 'error';
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: ' + messageColor;
     node.style.position = 'absolute';
     node.style.left = 0;
@@ -114,6 +115,13 @@
     node.style.fontSize = '30px';
 
     node.textContent = (status === STATUS_OK) ? SUCCESS_MESSAGE : status;
+
+    var prevError = document.querySelector('#error');
+
+    if (prevError) {
+      window.Util.removeElement(prevError);
+    }
+
     document.body.insertAdjacentElement('afterbegin', node);
 
     if (showTime) {
@@ -129,7 +137,7 @@
   };
 
   var onXHRError = function (errorMessage) {
-    showStatusMessage(errorMessage);
+    showStatusMessage(errorMessage, MESSAGE_TIMEOUT);
   };
 
   window.backend.load({
