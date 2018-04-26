@@ -19,6 +19,10 @@
 
     getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
+    },
+
+    removeElement: function (el) {
+      el.parentElement.removeChild(el);
     }
   };
 })();

@@ -2,7 +2,9 @@
 
 (function () {
   window.colorize = function (el, colors, input) {
-    el.addEventListener('click', function () {
+    el.addEventListener('click', function (evt) {
+      evt.preventDefault();
+
       var currentColor = input.value || colors[0];
 
       var setColor = function (element, value) {
