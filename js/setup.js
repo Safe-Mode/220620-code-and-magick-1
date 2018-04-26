@@ -7,8 +7,12 @@
   // var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   // var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-  var DATA_URL = 'https://js.dump.academy/code-and-magick/data';
+  var ENDPOINT_URL = 'https://js.dump.academy/code-and-magic';
+  var DATA_URL = ENDPOINT_URL + '/data';
   var WIZARDS_COUNT = 4;
+  var STATUS_OK = 200;
+  var SUCCESS_MESSAGE = 'Данные успешно отправлены';
+  var MESSAGE_TIMEOUT = 5000;
 
   var setupModal = document.querySelector('.setup');
   var setupOpenEl = document.querySelector('.setup-open');
@@ -99,20 +103,33 @@
     container.appendChild(wizardsFragment);
   };
 
-  var onXHRSuccess = function (wizards) {
-    appendElements(wizards, wizardTemplate, similarWizards);
-  };
-
-  var onXHRError = function (errorMessage) {
+  var showStatusMessage = function (status, showTime) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    var messageColor = (status === STATUS_OK) ? 'green' : 'red';
+
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: ' + messageColor;
     node.style.position = 'absolute';
     node.style.left = 0;
     node.style.right = 0;
     node.style.fontSize = '30px';
 
-    node.textContent = errorMessage;
+    node.textContent = (status === STATUS_OK) ? SUCCESS_MESSAGE : status;
     document.body.insertAdjacentElement('afterbegin', node);
+
+    if (showTime) {
+      var timeout = setTimeout(function () {
+        window.Util.removeElement(node);
+        clearTimeout(timeout);
+      }, showTime);
+    }
+  };
+
+  var onXHRSuccess = function (wizards) {
+    appendElements(wizards, wizardTemplate, similarWizards);
+  };
+
+  var onXHRError = function (errorMessage) {
+    showStatusMessage(errorMessage);
   };
 
   window.backend.load({
@@ -124,4 +141,22 @@
   var similarBLock = setupModal.querySelector('.setup-similar');
 
   toggleModal(similarBLock);
+
+  var form = document.querySelector('.setup-wizard-form');
+
+  var onFormSubmit = function (response, status) {
+    toggleModal(setupModal);
+    showStatusMessage(status, MESSAGE_TIMEOUT);
+  };
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save({
+      url: ENDPOINT_URL,
+      data: new FormData(evt.currentTarget),
+      onLoad: onFormSubmit,
+      onError: onXHRError
+    });
+
+    evt.preventDefault();
+  });
 })();

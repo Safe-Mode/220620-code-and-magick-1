@@ -11,7 +11,7 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === STATUS_OK) {
-        onSuccess(xhr.response);
+        onSuccess(xhr.response, xhr.status);
       } else {
         onError('Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText);
       }
