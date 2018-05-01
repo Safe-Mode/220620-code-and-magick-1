@@ -105,8 +105,50 @@
     }
   };
 
-  var onXHRSuccess = function (wizards) {
-    window.render(wizards, wizardTemplate, similarWizards);
+  var wizards = [];
+
+  var getRank = function (wizard) {
+    var rank = 0;
+
+    if (wizard.colorCoat === window.userWizard.coatColor) {
+      rank += 2;
+    }
+
+    if (wizard.colorEyes === window.userWizard.eyesColor) {
+      rank += 1;
+    }
+
+    if (wizard.colorFireball === window.userWizard.fireballColor) {
+      rank += 0.5;
+    }
+
+    return rank;
+  };
+
+  var namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
+  var updateWizards = function () {
+    window.render(wizards.sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      return (rankDiff === 0) ? namesComparator(left.name, right.name) : rankDiff;
+    }));
+  };
+
+  window.userWizard.onChange = function () {
+    updateWizards();
+  };
+
+  var onXHRSuccess = function (data) {
+    wizards = data;
+    updateWizards();
     toggleModal(similarBLock);
   };
 
@@ -121,11 +163,6 @@
   });
 
   var similarBLock = setupModal.querySelector('.setup-similar');
-  var similarWizards = document.querySelector('.setup-similar-list');
-  var wizardTemplate = document.querySelector('#similar-wizard-template')
-      .content
-      .querySelector('.setup-similar-item');
-
   var form = document.querySelector('.setup-wizard-form');
 
   var onFormSubmit = function (response, status) {
@@ -136,7 +173,7 @@
   form.addEventListener('submit', function (evt) {
     window.backend.save({
       url: ENDPOINT_URL,
-      data: new FormData(evt.currentTarget),
+      data: new FormData(evt.target),
       onLoad: onFormSubmit,
       onError: onXHRError
     });
