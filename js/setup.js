@@ -8,12 +8,11 @@
   // var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
   var ENDPOINT_URL = 'https://js.dump.academy/code-and-magick';
-  var DATA_URL = ENDPOINT_URL + '/data';
-  var WIZARDS_COUNT = 4;
   var STATUS_OK = 200;
   var SUCCESS_MESSAGE = 'Данные успешно отправлены';
   var MESSAGE_TIMEOUT = 5000;
 
+  var dataURL = ENDPOINT_URL + '/data';
   var setupModal = document.querySelector('.setup');
   var setupOpenEl = document.querySelector('.setup-open');
   var setupCloseEl = setupModal.querySelector('.setup-close');
@@ -77,32 +76,6 @@
   //   eyesColors: EYES_COLORS
   // });
 
-  var wizardTemplate = document.querySelector('#similar-wizard-template')
-      .content
-      .querySelector('.setup-similar-item');
-
-  var renderWizard = function (data, template) {
-    var wizard = template.cloneNode(true);
-
-    wizard.querySelector('.setup-similar-label').textContent = data.name;
-    wizard.querySelector('.wizard-coat').style.fill = data.colorCoat;
-    wizard.querySelector('.wizard-eyes').style.fill = data.colorEyes;
-
-    return wizard;
-  };
-
-  var similarWizards = setupModal.querySelector('.setup-similar-list');
-
-  var appendElements = function (data, template, container) {
-    var wizardsFragment = document.createDocumentFragment();
-
-    for (var i = 0; i < WIZARDS_COUNT; i++) {
-      wizardsFragment.appendChild(renderWizard(data[i], template));
-    }
-
-    container.appendChild(wizardsFragment);
-  };
-
   var showStatusMessage = function (status, showTime) {
     var node = document.createElement('div');
     var messageColor = (status === STATUS_OK) ? 'green' : 'red';
@@ -133,7 +106,8 @@
   };
 
   var onXHRSuccess = function (wizards) {
-    appendElements(wizards, wizardTemplate, similarWizards);
+    window.render(wizards, wizardTemplate, similarWizards);
+    toggleModal(similarBLock);
   };
 
   var onXHRError = function (errorMessage) {
@@ -141,14 +115,16 @@
   };
 
   window.backend.load({
-    url: DATA_URL,
+    url: dataURL,
     onLoad: onXHRSuccess,
     onError: onXHRError
   });
 
   var similarBLock = setupModal.querySelector('.setup-similar');
-
-  toggleModal(similarBLock);
+  var similarWizards = document.querySelector('.setup-similar-list');
+  var wizardTemplate = document.querySelector('#similar-wizard-template')
+      .content
+      .querySelector('.setup-similar-item');
 
   var form = document.querySelector('.setup-wizard-form');
 
