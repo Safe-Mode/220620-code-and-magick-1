@@ -143,7 +143,7 @@
   };
 
   window.userWizard.onChange = function () {
-    updateWizards();
+    window.debounce(updateWizards);
   };
 
   var onXHRSuccess = function (data) {
