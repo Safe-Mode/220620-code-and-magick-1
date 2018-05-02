@@ -29,17 +29,20 @@
   };
 
   var Wizard = function (options) {
-    this.name = options.name + ' ' + options.surname;
+    this.name = options.name;
     this.coatColor = options.coatColor;
     this.coatColorInput = options.coatColorInput;
     this.eyesColor = options.eyesColor;
     this.eyesColorInput = options.eyesColorInput;
+    this.fireballColor = options.fireballColor;
+    this.fireballColorInput = options.fireballColorInput;
   };
 
   Wizard.prototype.colorizeCoat = function () {
     var newColor = changeColor(COAT_COLORS, this.coatColorInput);
 
     this.coatColor = newColor;
+    this.coatColorInput.value = newColor;
     this.onChange(this);
 
     return newColor;
@@ -49,6 +52,7 @@
     var newColor = changeColor(EYES_COLORS, this.eyesColorInput);
 
     this.eyesColor = newColor;
+    this.eyesColorInput.value = newColor;
     this.onChange(this);
 
     return newColor;
@@ -58,6 +62,7 @@
     var newColor = changeColor(FIREBALL_COLORS, this.fireballColorInput);
 
     this.fireballColor = newColor;
+    this.fireballColorInput.value = newColor;
     this.onChange(this);
 
     return newColor;

@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
-  window.colorize = function (el, colors, input) {
-    el.addEventListener('click', function (evt) {
+  window.colorize = function (options) {
+    options.el.addEventListener('click', function (evt) {
       evt.preventDefault();
 
-      var currentColor = input.value || colors[0];
+      var currentColor = options.input.value || options.colors[0];
 
       var setColor = function (element, value) {
         if (element.tagName === 'use') {
@@ -14,17 +14,21 @@
           element.style.backgroundColor = value;
         }
 
-        input.value = value;
+        options.input.value = value;
       };
 
-      for (var i = 0; i < colors.length; i++) {
-        if (colors[i] === currentColor && i < colors.length - 1) {
-          setColor(el, colors[i + 1]);
+      for (var i = 0; i < options.colors.length; i++) {
+        if (options.colors[i] === currentColor && i < options.colors.length - 1) {
+          setColor(options.el, options.colors[i + 1]);
           break;
-        } else if (i === colors.length - 1) {
-          setColor(el, colors[0]);
+        } else if (i === options.colors.length - 1) {
+          setColor(options.el, options.colors[0]);
           break;
         }
+      }
+
+      if (options.cb) {
+        options.cb();
       }
     });
   };
