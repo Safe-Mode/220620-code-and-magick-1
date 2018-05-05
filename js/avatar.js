@@ -28,6 +28,10 @@
     }
   };
 
+  var setInitColor = function (el) {
+    el.style.color = initColor;
+  };
+
   fileChooserEl.addEventListener('change', function () {
     setUserFile();
   });
@@ -45,12 +49,15 @@
   });
 
   fileChooserBtn.addEventListener('dragleave', function (evt) {
-    evt.currentTarget.style.color = initColor;
+    setInitColor(evt.currentTarget);
   });
 
   fileChooserBtn.addEventListener('drop', function (evt) {
     evt.preventDefault();
+
     var file = evt.dataTransfer.files[0];
+
     setUserFile(file);
+    setInitColor(evt.currentTarget);
   });
 })();
