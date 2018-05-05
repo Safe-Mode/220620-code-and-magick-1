@@ -2,12 +2,10 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var HOVER_COLOR = '#da641a';
 
   var fileChooserEl = document.querySelector('input[type=file]');
   var fileChooserBtn = document.querySelector('.setup-user-upload');
   var previewEl = document.querySelector('.setup-user-pic');
-  var initColor = window.getComputedStyle(fileChooserBtn).color;
 
   var setUserFile = function (file) {
     file = (!file) ? fileChooserEl.files[0] : file;
@@ -28,8 +26,8 @@
     }
   };
 
-  var setInitColor = function (el) {
-    el.style.color = initColor;
+  var toggleInitColor = function (el) {
+    el.classList.toggle('upload-active');
   };
 
   fileChooserEl.addEventListener('change', function () {
@@ -45,11 +43,11 @@
   });
 
   fileChooserBtn.addEventListener('dragenter', function (evt) {
-    evt.currentTarget.style.color = HOVER_COLOR;
+    toggleInitColor(evt.currentTarget);
   });
 
   fileChooserBtn.addEventListener('dragleave', function (evt) {
-    setInitColor(evt.currentTarget);
+    toggleInitColor(evt.currentTarget);
   });
 
   fileChooserBtn.addEventListener('drop', function (evt) {
@@ -58,6 +56,6 @@
     var file = evt.dataTransfer.files[0];
 
     setUserFile(file);
-    setInitColor(evt.currentTarget);
+    toggleInitColor(evt.currentTarget);
   });
 })();
