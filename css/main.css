@@ -1019,3 +1019,72 @@ input[type=radio]:checked + .review-mark-label
 
     opacity: 0;
 }
+
+/*Добавленные стили*/
+.upload
+{
+    max-width: none;
+    width: auto;
+
+    vertical-align: middle;
+    line-height: 40px;
+}
+
+.setup-user-name {
+    vertical-align: middle;
+}
+
+.setup-user-upload
+{
+    position: relative;
+
+    display: inline-block;
+    margin-left: 50px;
+    width: 30px;
+    height: 30px;
+
+    vertical-align: middle;
+    font-size: 0;
+    color: #ffffff;
+
+    border: 2px solid currentColor;
+    border-radius: 5px;
+}
+
+.setup-user-upload:hover,
+.setup-user-upload:focus,
+.setup-user-upload:active
+{
+    color: #da641a;
+    cursor: pointer;
+}
+
+.setup-user-upload:active
+{
+    opacity: 0.7;
+}
+
+.setup-user-upload::before,
+.setup-user-upload::after
+{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 15px;
+    height: 2px;
+
+    color: inherit;
+
+    background-color: currentColor;
+    transform: translate(-50%, -50%);
+}
+
+.setup-user-upload::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.upload-active {
+  color: #da641a;
+}

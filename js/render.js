@@ -11,6 +11,10 @@
   var renderWizard = function (data) {
     var wizard = wizardTemplate.cloneNode(true);
 
+    for (var i = 0; i < data.artifacts.length; i++) {
+      wizard.title += (i === data.artifacts.length - 1) ? data.artifacts[i].description : data.artifacts[i].description + '\n';
+    }
+
     wizard.querySelector('.setup-similar-label').textContent = data.name;
     wizard.querySelector('.wizard-coat').style.fill = data.colorCoat;
     wizard.querySelector('.wizard-eyes').style.fill = data.colorEyes;
