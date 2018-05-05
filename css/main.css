@@ -1045,8 +1045,9 @@ input[type=radio]:checked + .review-mark-label
 
     vertical-align: middle;
     font-size: 0;
+    color: #ffffff;
 
-    border: 2px solid #ffffff;
+    border: 2px solid currentColor;
     border-radius: 5px;
 }
 
@@ -1054,7 +1055,7 @@ input[type=radio]:checked + .review-mark-label
 .setup-user-upload:focus,
 .setup-user-upload:active
 {
-    border-color: #da641a;
+    color: #da641a;
     cursor: pointer;
 }
 
@@ -1074,19 +1075,12 @@ input[type=radio]:checked + .review-mark-label
     width: 15px;
     height: 2px;
 
-    background-color: #ffffff;
+    color: inherit;
+
+    background-color: currentColor;
     transform: translate(-50%, -50%);
 }
 
 .setup-user-upload::after {
     transform: translate(-50%, -50%) rotate(90deg);
-}
-
-.setup-user-upload:hover::before,
-.setup-user-upload:focus::before,
-.setup-user-upload:active::before,
-.setup-user-upload:hover::after,
-.setup-user-upload:focus::after,
-.setup-user-upload:active::after {
-  background-color: #da641a;
 }
