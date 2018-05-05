@@ -78,9 +78,10 @@
       <div class="setup-user">
         <div class="upload">
           <img class="setup-user-pic" src="./img/user-1.jpg"/>
-          <input type="file" name="avatar">
+          <input type="file" name="avatar" id="file">
+          <label for="file" class="setup-user-upload">Загрузить фото</label>
         </div>
-        <label>
+        <label class="setup-user-name">
           <input type="text" name="username"
                  minlength="2"
                  maxlength="25" required
@@ -218,6 +219,7 @@
 <script src="js/setup.js"></script>
 <script src="js/dialog.js"></script>
 <script src="js/artifacts.js"></script>
+<script src="js/avatar.js"></script>
 
 </body>
 </html>
